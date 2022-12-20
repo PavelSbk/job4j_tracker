@@ -2,70 +2,93 @@ package ru.job4j.tracker;
 
 public class StartUI {
 
+    public static boolean showAll(Tracker tracker) {
+        System.out.println("=== Show all items ===");
+        Item[] items = tracker.findAll();
+        for (Item item : items) {
+            System.out.println(item);
+        }
+        return items.length > 0;
+    }
+
+    public static void createItem(Input input, Tracker tracker) {
+        System.out.println("=== Create a new Item ===");
+        String name = input.askStr("Enter name: ");
+        Item item = new Item(name);
+        tracker.add(item);
+        System.out.println("Добавленная заявка: " + item);
+    }
+
+    public static boolean editItem(Input input, Tracker tracker) {
+        System.out.println("=== Edit item ===");
+        int id = input.askInt("Enter id: ");
+        String name = input.askStr("Enter name: ");
+        Item item = new Item(name);
+        return tracker.replace(id, item);
+    }
+
+    public static boolean deleteItem(Input input, Tracker tracker) {
+        System.out.println("=== Delete item ===");
+        int id = input.askInt("Enter id: ");
+        return tracker.delete(id);
+    }
+
+    public static void findById(Input input, Tracker tracker) {
+        System.out.println("=== Find item by id ===");
+        int id = input.askInt("Enter id: ");
+        Item item = tracker.findById(id);
+        if (item != null) {
+            System.out.println(item);
+        } else {
+            System.out.println("Заявка с введенным id: " + id + " не найдена.");
+        }
+    }
+
+    public static void findByName(Input input, Tracker tracker) {
+        System.out.println("=== Find items by name ===");
+        String name = input.askStr("Enter name: ");
+        Item[] items = tracker.findByName(name);
+        if (items.length > 0) {
+            for (Item item : items) {
+                System.out.println(item);
+            }
+        } else {
+            System.out.println("Заявки с именем: " + name + " не найдены.");
+        }
+    }
+
     public void init(Input input, Tracker tracker) {
         boolean run = true;
         while (run) {
             showMenu();
-            System.out.print("Select: ");
-            int select = input.askInt("Enter name: ");
+            int select = input.askInt("Select: ");
             if (select == 0) {
-                System.out.println("=== Create a new Item ===");
-                String name = input.askStr("Enter name: ");
-                Item item = new Item(name);
-                tracker.add(item);
-                System.out.println("Добавленная заявка: " + item);
+                createItem(input, tracker);
             } else if (select == 1) {
-                System.out.println("=== Show all items ===");
-                Item[] items = tracker.findAll();
-                if (items.length > 0) {
-                    for (Item item : items) {
-                        System.out.println(item);
-                    }
-                } else {
+                if (!showAll(tracker)) {
                     System.out.println("Хранилище еще не содержит заявок");
                 }
             } else if (select == 2) {
-                System.out.println("=== Edit item ===");
-                int id = input.askInt("Enter id: ");
-                String name = input.askStr("Enter name: ");
-                Item item = new Item(name);
-                if (tracker.replace(id, item)) {
+                if (editItem(input, tracker)) {
                     System.out.println("Заявка изменена успешно.");
                 } else {
                     System.out.println("Ошибка замены заявки.");
                 }
             } else if (select == 3) {
-                System.out.println("=== Delete item ===");
-                int id = input.askInt("Enter id: ");
-                if (tracker.delete(id)) {
+                if (deleteItem(input, tracker)) {
                     System.out.println("Заявка удалена успешно.");
                 } else {
                     System.out.println("Ошибка удаления заявки.");
                 }
             } else if (select == 4) {
-                System.out.println("=== Find item by id ===");
-                int id = input.askInt("Enter id: ");
-                Item item = tracker.findById(id);
-                if (item != null) {
-                    System.out.println(item);
-                } else {
-                    System.out.println("Заявка с введенным id: " + id + " не найдена.");
-                }
+                findById(input, tracker);
             } else if (select == 5) {
-                System.out.println("=== Find items by name ===");
-                String name = input.askStr("Enter name: ");
-                Item[] items = tracker.findByName(name);
-                if (items.length > 0) {
-                    for (Item item : items) {
-                        System.out.println(item);
-                    }
-                } else {
-                    System.out.println("Заявки с именем: " + name + " не найдены.");
-                }
+                findByName(input, tracker);
             } else if (select == 6) {
                 run = false;
             }
         }
+
     }
 
     private void showMenu() {
