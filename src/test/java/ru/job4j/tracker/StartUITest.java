@@ -26,4 +26,29 @@ public class StartUITest {
         Item expected = new Item("CallBack");
         assertThat(created.getName()).isEqualTo(expected.getName());
     }
+
+    @Test
+    public void whenEditItem() {
+        Tracker tracker = new Tracker();
+        Item item = new Item();
+        tracker.add(item);
+        String[] answer = {
+                String.valueOf(item.getId()),
+                "edited item"
+        };
+        StartUI.editItem(new StubInput(answer), tracker);
+        Item edited = tracker.findById(item.getId());
+        Item expected = new Item("edited item");
+        assertThat(edited.getName()).isEqualTo(expected.getName());
+    }
+
+    @Test
+    public void whenDeleteItem() {
+        Tracker tracker = new Tracker();
+        Item item = new Item("new Item");
+        tracker.add(item);
+        String[] answers = {String.valueOf(item.getId())};
+        StartUI.deleteItem(new StubInput(answers), tracker);
+        assertThat(tracker.findById(item.getId())).isEqualTo(null);
+    }
 }

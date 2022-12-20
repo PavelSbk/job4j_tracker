@@ -19,18 +19,26 @@ public class StartUI {
         System.out.println("Добавленная заявка: " + item);
     }
 
-    public static boolean editItem(Input input, Tracker tracker) {
+    public static void editItem(Input input, Tracker tracker) {
         System.out.println("=== Edit item ===");
         int id = input.askInt("Enter id: ");
         String name = input.askStr("Enter name: ");
         Item item = new Item(name);
-        return tracker.replace(id, item);
+        if (tracker.replace(id, item)) {
+            System.out.println("Заявка изменена успешно.");
+        } else {
+            System.out.println("Ошибка замены заявки.");
+        }
     }
 
-    public static boolean deleteItem(Input input, Tracker tracker) {
+    public static void deleteItem(Input input, Tracker tracker) {
         System.out.println("=== Delete item ===");
         int id = input.askInt("Enter id: ");
-        return tracker.delete(id);
+        if (tracker.delete(id)) {
+            System.out.println("Заявка удалена успешно.");
+        } else {
+            System.out.println("Ошибка удаления заявки.");
+        }
     }
 
     public static void findById(Input input, Tracker tracker) {
@@ -69,17 +77,9 @@ public class StartUI {
                     System.out.println("Хранилище еще не содержит заявок");
                 }
             } else if (select == 2) {
-                if (editItem(input, tracker)) {
-                    System.out.println("Заявка изменена успешно.");
-                } else {
-                    System.out.println("Ошибка замены заявки.");
-                }
+                editItem(input, tracker);
             } else if (select == 3) {
-                if (deleteItem(input, tracker)) {
-                    System.out.println("Заявка удалена успешно.");
-                } else {
-                    System.out.println("Ошибка удаления заявки.");
-                }
+                deleteItem(input, tracker);
             } else if (select == 4) {
                 findById(input, tracker);
             } else if (select == 5) {
