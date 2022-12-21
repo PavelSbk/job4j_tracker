@@ -2,13 +2,16 @@ package ru.job4j.tracker;
 
 public class StartUI {
 
-    public static boolean showAll(Tracker tracker) {
+    public static void showAll(Tracker tracker) {
         System.out.println("=== Show all items ===");
         Item[] items = tracker.findAll();
-        for (Item item : items) {
-            System.out.println(item);
+        if (items.length > 0) {
+            for (Item item : items) {
+                System.out.println(item);
+            }
+        } else {
+            System.out.println("Хранилище еще не содержит заявок");
         }
-        return items.length > 0;
     }
 
     public static void createItem(Input input, Tracker tracker) {
@@ -73,9 +76,7 @@ public class StartUI {
             if (select == 0) {
                 createItem(input, tracker);
             } else if (select == 1) {
-                if (!showAll(tracker)) {
-                    System.out.println("Хранилище еще не содержит заявок");
-                }
+                showAll(tracker);
             } else if (select == 2) {
                 editItem(input, tracker);
             } else if (select == 3) {
