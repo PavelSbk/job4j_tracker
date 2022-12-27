@@ -33,6 +33,9 @@ public class PasswordValidator {
             if (!Character.isDigit(ch) && !Character.isLetter(ch)) {
                 hasSymbol = true;
             }
+            if (hasDigit && hasLower && hasSymbol && hasUpper) {
+                break;
+            }
         }
         if (!hasLower) {
             throw new IllegalArgumentException("Password should contain at least one lowercase letter");
