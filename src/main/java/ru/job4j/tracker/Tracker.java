@@ -1,37 +1,38 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Tracker {
 
-    private final Item[] items = new Item[100];
+    private final List<Item> items = new ArrayList<>();
     private int ids = 1;
-    private int size = 0;
 
     public Item add(Item item) {
         item.setId(ids++);
-        items[size++] = item;
+        items.add(item);
         return item;
     }
 
     public Item[] findAll() {
-        return Arrays.copyOf(items, size);
+        return items.toArray(new Item[0]);
     }
 
     public Item[] findByName(String key) {
-        Item[] rst = new Item[size];
+        Item[] rst = new Item[items.size()];
         int counter = 0;
-        for (int i = 0; i < size; i++) {
-            if (key.equals(items[i].getName())) {
-                rst[counter++] = items[i];
+        for (Item item : items) {
+            if (key.equals(item.getName())) {
+                rst[counter++] = item;
             }
         }
         return Arrays.copyOf(rst, counter);
     }
 
     private int indexOf(int id) {
-        for (int i = 0; i < size; i++) {
-            if (items[i].getId() == id) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getId() == id) {
                 return i;
             }
         }
@@ -40,7 +41,7 @@ public class Tracker {
 
     public Item findById(int id) {
         int index = indexOf(id);
-        return index != -1 ? items[index] : null;
+        return index != -1 ? items.get(index) : null;
     }
 
     public boolean replace(int id, Item item) {
@@ -48,7 +49,7 @@ public class Tracker {
         boolean rsl = index != -1;
         if (rsl) {
             item.setId(id);
-            items[index] = item;
+            items.set(index, item);
         }
         return rsl;
     }
@@ -57,9 +58,7 @@ public class Tracker {
         int index = indexOf(id);
         boolean rsl = index != -1;
         if (rsl) {
-            System.arraycopy(items, index + 1, items, index, size - index - 1);
-            items[size - 1] = null;
-            size--;
+            items.remove(items.get(index));
         }
         return rsl;
     }
