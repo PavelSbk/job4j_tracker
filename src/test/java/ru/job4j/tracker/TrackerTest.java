@@ -2,6 +2,8 @@ package ru.job4j.tracker;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TrackerTest {
@@ -32,8 +34,9 @@ public class TrackerTest {
         Item second = new Item("Second");
         tracker.add(first);
         tracker.add(second);
-        Item result = tracker.findAll()[0];
-        assertThat(result.getName()).isEqualTo(first.getName());
+        List<Item> expected = List.of(tracker.findById(1), tracker.findById(2));
+        List<Item> result = tracker.findAll();
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -46,8 +49,8 @@ public class TrackerTest {
         tracker.add(new Item("First"));
         tracker.add(new Item("Second"));
         tracker.add(new Item("First"));
-        Item[] result = tracker.findByName(first.getName());
-        assertThat(result.length).isEqualTo(3);
+        List<Item> result = tracker.findByName(first.getName());
+        assertThat(result.size()).isEqualTo(3);
     }
 
     @Test
@@ -60,8 +63,9 @@ public class TrackerTest {
         tracker.add(new Item("First"));
         tracker.add(new Item("Second"));
         tracker.add(new Item("First"));
-        Item[] result = tracker.findByName(second.getName());
-        assertThat(result[1].getName()).isEqualTo(second.getName());
+        List<Item> expected = List.of(tracker.findById(2), tracker.findById(4));
+        List<Item> result = tracker.findByName(second.getName());
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -79,10 +83,12 @@ public class TrackerTest {
         tracker.add(new Item("2th"));
         tracker.add(new Item("3rd"));
         tracker.add(new Item("4th"));
-        Item[] rst = tracker.findByName("4th");
-        String[] rstToString = {rst[0].getName(), rst[1].getName(), rst[2].getName()};
-        String[] expected = {"4th", "4th", "4th"};
-        assertThat(rstToString).isEqualTo(expected);
+        List<Item> expected = List.of(tracker.findById(4),
+                tracker.findById(5),
+                tracker.findById(8)
+        );
+        List<Item> result = tracker.findByName(fourth.getName());
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test

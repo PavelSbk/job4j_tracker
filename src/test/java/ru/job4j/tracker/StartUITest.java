@@ -2,6 +2,7 @@ package ru.job4j.tracker;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,7 +21,8 @@ public class StartUITest {
                 new ExitAction(output)
         );
         new StartUI(output).init(in, tracker, actions);
-        assertThat(tracker.findAll()[1].getName()).isEqualTo("Item name1");
+        List<Item> expected = List.of(tracker.findById(1), tracker.findById(2));
+        assertThat(tracker.findAll()).isEqualTo(expected);
     }
 
     @Test
@@ -38,7 +40,8 @@ public class StartUITest {
                 new ExitAction(output)
         );
         new StartUI(output).init(input, tracker, actions);
-        assertThat(tracker.findAll()[0].getName()).isEqualTo(replacedName);
+        List<Item> expected = List.of(tracker.findById(1));
+        assertThat(tracker.findAll()).isEqualTo(expected);
     }
 
     @Test
