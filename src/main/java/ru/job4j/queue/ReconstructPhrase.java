@@ -18,10 +18,10 @@ public class ReconstructPhrase {
         int size = evenElements.size();
         for (int i = 0; i < size; i++) {
             if (i % 2 == 0) {
-                rst.append(evenElements.removeFirst());
-                continue;
+                rst.append(evenElements.pollFirst());
+            } else {
+                evenElements.pollFirst();
             }
-            evenElements.removeFirst();
         }
         return rst.toString();
     }
@@ -30,7 +30,7 @@ public class ReconstructPhrase {
         StringBuilder rst = new StringBuilder();
         int size = descendingElements.size();
         for (int i = 0; i < size; i++) {
-            rst.append(descendingElements.removeLast());
+            rst.append(descendingElements.pollLast());
         }
         return rst.toString();
     }
