@@ -17,7 +17,7 @@ public class AppleStore {
         for (int i = 0; i < count - 1; i++) {
             queue.poll();
         }
-        return queue.peek().name();
+        return queue.poll().name();
     }
 
     public String getLastUpsetCustomer() {
