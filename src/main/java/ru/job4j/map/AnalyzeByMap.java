@@ -64,10 +64,7 @@ public class AnalyzeByMap {
         Map<String, Integer> map = new LinkedHashMap<>();
         for (Pupil pupil : pupils) {
             for (Subject subject : pupil.subjects()) {
-                int scoreSum = subject.score();
-                if (map.containsKey(subject.name())) {
-                    scoreSum = map.get(subject.name()) + subject.score();
-                }
+                int scoreSum = map.getOrDefault(subject.name(), 0) + subject.score();
                 map.put(subject.name(), scoreSum);
             }
         }
