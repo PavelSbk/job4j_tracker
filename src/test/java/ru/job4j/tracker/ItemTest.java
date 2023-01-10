@@ -24,7 +24,7 @@ class ItemTest {
                 new Item("Acb", 2),
                 new Item("Abc", 1)
         );
-        assertThat(items).isEqualTo(expected);
+        assertThat(items.toString()).isEqualTo(expected.toString());
     }
 
     @Test
@@ -42,6 +42,6 @@ class ItemTest {
                 new Item("Bca", 3),
                 new Item("Cba", 4)
         );
-        assertThat(items).isEqualTo(expected);
+        assertThat(items.toString()).isEqualTo(expected.toString());
     }
 }
