@@ -28,8 +28,8 @@ public class FunctionCalculatorTest {
     @Test
     public void whenExponentialFunctionThenLinearResults() {
         FunctionCalculator function = new FunctionCalculator();
-        List<Double> result = function.diapason(2, 5, x -> Math.pow(x, 2) + 1);
-        List<Double> expected = Arrays.asList(5D, 10D, 17D);
+        List<Double> result = function.diapason(2, 5, x -> Math.pow(2, x) + 1);
+        List<Double> expected = Arrays.asList(5D, 9D, 17D);
         assertThat(result).containsAll(expected);
     }
 }
