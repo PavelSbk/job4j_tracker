@@ -15,15 +15,18 @@ public class SchoolTest {
                 new Student(10, "Surname1"),
                 new Student(40, "Surname4"),
                 new Student(50, "Surname5"),
+                new Student(69, "Surname6"),
                 new Student(70, "Surname7"),
-                new Student(90, "Surname9")
+                new Student(90, "Surname9"),
+                new Student(100, "Surname10")
         );
         School sc = new School();
-        Predicate<Student> pr = student -> student.getScore() > 69 && student.getScore() < 101;
+        Predicate<Student> pr = student -> student.getScore() >= 70 && student.getScore() <= 100;
         List<Student> rsl = sc.collect(students, pr);
         List<Student> expected = new ArrayList<>();
         expected.add(new Student(70, "Surname7"));
         expected.add(new Student(90, "Surname9"));
+        expected.add(new Student(100, "Surname10"));
         assertThat(rsl).containsAll(expected);
     }
 
@@ -37,7 +40,7 @@ public class SchoolTest {
                 new Student(80, "Surname8")
         );
         School sc = new School();
-        Predicate<Student> pr = student -> student.getScore() > 49 && student.getScore() < 70;
+        Predicate<Student> pr = student -> student.getScore() >= 50 && student.getScore() < 70;
         List<Student> rsl = sc.collect(students, pr);
         List<Student> expected = new ArrayList<>();
         expected.add(new Student(50, "Surname5"));
@@ -55,7 +58,7 @@ public class SchoolTest {
                 new Student(90, "Surname9")
         );
         School sc = new School();
-        Predicate<Student> pr = st -> st.getScore() > -1 && st.getScore() < 50;
+        Predicate<Student> pr = st -> st.getScore() > 0 && st.getScore() < 50;
         List<Student> rsl = sc.collect(students, pr);
         List<Student> expected = new ArrayList<>();
         expected.add(new Student(10, "Surname1"));
