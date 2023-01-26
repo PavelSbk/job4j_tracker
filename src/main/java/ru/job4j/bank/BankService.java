@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Класс описывает простейшую модель банковской системы.
+ *
  * @author Public Sbk
  * @version 1.0
  */
@@ -23,6 +25,7 @@ public class BankService {
     /**
      * Метод оздаёт карточку пользователя с пустым списком класса Account
      * и размещает её в хранилище users.
+     *
      * @param user объект класса User.
      */
     public void addUser(User user) {
@@ -31,6 +34,7 @@ public class BankService {
 
     /**
      * Метод удаляет из хранилища users карточку пользователя по паспорту.
+     *
      * @param passport принимает номер паспорта класса String.
      * @return возвращает true если удаление прошло успешно.
      */
@@ -43,6 +47,7 @@ public class BankService {
      * Поиск карточки пользователя осуществляется по паспорту.
      * В методе осуществляется проверка наличия такого же счёта у пользователя,
      * для исключения дублирования счетов.
+     *
      * @param passport паспорт пользователя.
      * @param account  новый счёт.
      */
@@ -58,17 +63,15 @@ public class BankService {
 
     /**
      * Метод ищет пользователя по паспорту.
+     *
      * @param passport паспорт пользователя.
      * @return возвращает экземпляр класса User с искомым паспортом passport
      * или null если его не существует.
      */
     public User findByPassport(String passport) {
-        for (User user : users.keySet()) {
-            if (passport.equals(user.getPassport())) {
-                return user;
-            }
-        }
-        return null;
+        return users.keySet().stream()
+                .filter(user -> passport.equals(user.getPassport()))
+                .findFirst().orElse(null);
     }
 
     /**
@@ -76,6 +79,7 @@ public class BankService {
      * Сначала метод ищет карточку пользователя по паспорту,
      * далее в списке счетов нужный счёт по реквезитам.
      * В методе осуществляется проверка на наличие в хранилище пользователя.
+     *
      * @param passport  паспорт пользователя.
      * @param requisite реквизиты искомого счёта.
      * @return возвращает счёт или null если такого пользователя или счёта не существует.
@@ -84,11 +88,9 @@ public class BankService {
         User user = findByPassport(passport);
         if (user != null) {
             List<Account> accounts = getAccounts(user);
-            for (Account account : accounts) {
-                if (requisite.equals(account.getRequisite())) {
-                    return account;
-                }
-            }
+            return accounts.stream()
+                    .filter(account -> requisite.equals(account.getRequisite()))
+                    .findFirst().orElse(null);
         }
         return null;
     }
@@ -99,6 +101,7 @@ public class BankService {
      * - на наличие в хранилище карточки списания
      * - на наличие в хранилище карточки назначения
      * - на положительную разницу сумм переводов.
+     *
      * @param srcPassport   паспорт карточки списания.
      * @param srcRequisite  реквизиты счёта списания.
      * @param destPassport  паспорт карточки назначения.
@@ -123,6 +126,7 @@ public class BankService {
 
     /**
      * Метод позволяет получить доступ к списку счетов пользователя
+     *
      * @param user принимает карточку пользователя
      * @return возвращает коллекцию счетов пользователя
      */
